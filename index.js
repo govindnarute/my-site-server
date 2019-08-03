@@ -8,11 +8,13 @@ const mongoose = require('mongoose')
 //Routes import
 
 const postRoutes = require('./routes/posts')
+const userRoute = require('./routes/auth')
 
 //Middleware
 app.use(cors())
 app.use(bodyParser.json())
 app.use('/api/v1/admin/posts', postRoutes)
+app.use('/api/v1/admin', userRoute)
 //api
 
 app.get('/', (req, res) => {
