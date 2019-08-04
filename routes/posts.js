@@ -20,6 +20,24 @@ router.get('/', async (req, res) => {
   }
 })
 
+// GET posts
+router.get('/site', async (req, res) => {
+  try {
+    const posts = await PostModel.find({ is_publish: true })
+    res.json({
+      success: true,
+      posts: posts,
+      message: 'Post fetch successfully'
+    })
+  } catch (err) {
+    res.json({
+      success: false,
+      posts: [],
+      error: err
+    })
+  }
+})
+
 // save  post
 router.post('/', async (req, res) => {
   try {
@@ -55,12 +73,37 @@ router.post('/', async (req, res) => {
   }
 })
 // update posts
-router.put('/', (req, res) => {
-  res.json({
-    success: true,
-    posts: [],
-    message: 'Post save successfully'
-  })
+router.put('/', async (req, res) => {
+  try {
+    const post = await PostModel.find({ _id: req.params.id })
+
+    update_post = await PostModel.findOneAndUpdate(
+      {
+        _id: req.params.id
+      },
+      {
+        $set: {
+          title: req.body.title,
+          short_description: req.body.short_description,
+          description: req.body.description,
+          url_key: req.body.url_key
+        }
+      },
+      {
+        new: true
+      }
+    )
+    res.json({
+      success: true,
+      posts: update_post,
+      message: 'updated successfully'
+    })
+  } catch (err) {
+    res.json({
+      success: false,
+      error: err
+    })
+  }
 })
 
 // GET post by id
