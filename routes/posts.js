@@ -73,7 +73,7 @@ router.post('/', async (req, res) => {
   }
 })
 // update posts
-router.put('/', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const post = await PostModel.find({ _id: req.params.id })
 
